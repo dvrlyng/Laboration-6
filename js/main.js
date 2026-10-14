@@ -23,6 +23,26 @@ function validateForm(searchText) {
 
 }
 
+/*hämta recept*/
+async function fetchData(searchText) { //hämtar recept från API
+
+    const url = `https://dummyjson.com/recipes/search?q=${searchText}`; //skapa API adressen med sökfras
+
+    const response = await fetch(url); //skickar förfrågan till API
+    const data = await response.json(); //omvandla json till javascript
+
+    return data;
+
+
+}
+
+
+
+
+
+
+
+
 /*eventlyssnare*/
 searchForm.addEventListener("submit", function (event) { //lyssnar när formuläret skickas
     event.preventDefault(); //sidan laddas ej om
@@ -33,8 +53,5 @@ searchForm.addEventListener("submit", function (event) { //lyssnar när formulä
     if (!validateForm(searchText)) {
         return;
     }
-
-    //TEST   
-    console.log(searchText);
 
 });
