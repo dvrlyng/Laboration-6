@@ -26,26 +26,31 @@ function validateForm(searchText) {
 /*hämta recept*/
 async function fetchData(searchText) { //hämtar recept från API
 
-    const url = `https://dummyjson.com/recipes/search?q=${searchText}`; //skapa API adressen med sökfras
+    try {
 
-    const response = await fetch(url); //skickar förfrågan till API
-    const data = await response.json(); //omvandla json till javascript
+        const url = `https://dummyjson.com/recipes/search?q=${searchText}`; //skapa API adressen med sökfras
+        const response = await fetch(url); //skickar förfrågan till API
 
-    return data;
 
+        if (!response.ok) { //kontrollerar om det finns fel
+            throw new Error("inget recept hittades, prova en ny sökfras.")
+        }
+
+        const data = await response.json(); //omvandla json till javascript
+
+        return data; //anropa funktionen
+    } catch (error) { //hanterar fel om det uppstår vid hämtning av data
+        console.error("Kunde inte hämta recept", error);
+
+    }
 
 }
 
 
-
-
-
-
-
-
 /*eventlyssnare*/
-searchForm.addEventListener("submit", function (event) { //lyssnar när formuläret skickas
+searchForm.addEventListener("submit", async function (event) { //lyssnar när formuläret skickas
     event.preventDefault(); //sidan laddas ej om
+    console.log("test");
 
     /*hämta det som användaren har skrivit*/
     const searchText = searchInput.value.trim(); //hämtar text från sökfältet
@@ -53,5 +58,6 @@ searchForm.addEventListener("submit", function (event) { //lyssnar när formulä
     if (!validateForm(searchText)) {
         return;
     }
-
+    const data = await fetchData(searchText); //hämtar receptet från API
+    console.log("test2")
 });
