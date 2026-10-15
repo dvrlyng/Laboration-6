@@ -39,7 +39,6 @@ async function fetchData(searchText) { //hämtar recept från API
         }
         //omvandla json till javascript
         const data = await response.json();
-        console.log(data);
 
         //kontrollerar om recept hittades
         if (data.recipes.length === 0) {
