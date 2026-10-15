@@ -72,14 +72,12 @@ function renderRecipe(recipe) {
     image.alt = recipe.name;
     article.appendChild(image);
 
-    recipeSection.appendChild(article);
-
-    //rececpt info
+    //recept info
     const info = document.createElement("div");
-    info.classList.add("recipe.info");
-    article.appendChild(info);
+    info.classList.add("recipe-info");
+    
 
-    //lägger till recept information
+    //lägger till recept information på sidan
     const recipeInfo = [ //skapade array med recept info
         `Servings: ${recipe.servings}`,
         `Prep time: ${recipe.prepTimeMinutes} minutes`,
@@ -92,12 +90,29 @@ function renderRecipe(recipe) {
         const information = document.createElement("p"); //skapar ny p element
         information.textContent = text;
         info.appendChild(information);
-    }
-    )
+    });
+    
+    article.appendChild(info);
+    recipeSection.appendChild(article);
 
     // ingredienser
+    const ingredientsTitle = document.createElement("h4"); //skapar rubrik
+    ingredientsTitle.textContent = "Ingredients"
+    article.appendChild(ingredientsTitle);
+
+    //skapar punktlista för ingredienserna
+    const ingredientsList = document.createElement("ul");
+
+    recipe.ingredients.forEach(function (ingredient) { //går igenom varje ingrediens och instruktion
+        const item = document.createElement("li"); //skapar ny li elemnt
+        item.textContent = ingredient;
+        ingredientsList.appendChild(item);
+    })
+
+    article.appendChild(ingredientsList);
 
 }
+
 
 /*eventlyssnare*/
 searchForm.addEventListener("submit", async function (event) { //lyssnar när formuläret skickas
