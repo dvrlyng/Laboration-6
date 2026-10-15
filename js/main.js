@@ -66,7 +66,7 @@ function renderRecipe(recipe) {
     title.textContent = recipe.name;
     article.appendChild(title);
 
-    //bild
+    //bilder
     const image = document.createElement("img");
     image.src = recipe.image;
     image.alt = recipe.name;
@@ -75,7 +75,7 @@ function renderRecipe(recipe) {
     //recept info
     const info = document.createElement("div");
     info.classList.add("recipe-info");
-    
+
 
     //lägger till recept information på sidan
     const recipeInfo = [ //skapade array med recept info
@@ -91,13 +91,14 @@ function renderRecipe(recipe) {
         information.textContent = text;
         info.appendChild(information);
     });
-    
-    article.appendChild(info);
-    recipeSection.appendChild(article);
 
-    // ingredienser
+    //lägger till informationen
+    article.appendChild(info);
+    recipeSection.appendChild(article);//lägger in hela receptet
+
+    /*ingredienser*/
     const ingredientsTitle = document.createElement("h4"); //skapar rubrik
-    ingredientsTitle.textContent = "Ingredients"
+    ingredientsTitle.textContent = "Ingredients";
     article.appendChild(ingredientsTitle);
 
     //skapar punktlista för ingredienserna
@@ -107,9 +108,28 @@ function renderRecipe(recipe) {
         const item = document.createElement("li"); //skapar ny li elemnt
         item.textContent = ingredient;
         ingredientsList.appendChild(item);
-    })
+    });
 
+    // lägger till ingredienserna
     article.appendChild(ingredientsList);
+
+
+    /*instruktioner*/
+    const instructionsTitle = document.createElement("h4"); //skapar rubrik
+    instructionsTitle.textContent = "Instructions";
+    article.appendChild(instructionsTitle);
+
+    //skapar en numreradlista för instruktioner
+    const instructionsList = document.createElement("ol");
+
+    recipe.instructions.forEach(function (instruction) {
+        const item = document.createElement("li"); //skapar ny li elemnt
+        item.textContent = instruction;
+        instructionsList.appendChild(item);
+    });
+
+    //lägger till instruktionerna
+    article.appendChild(instructionsList);
 
 }
 
@@ -117,7 +137,6 @@ function renderRecipe(recipe) {
 /*eventlyssnare*/
 searchForm.addEventListener("submit", async function (event) { //lyssnar när formuläret skickas
     event.preventDefault(); //sidan laddas ej om
-    console.log("test");
 
     /*hämta det som användaren har skrivit*/
     const searchText = searchInput.value.trim(); //hämtar text från sökfältet
@@ -132,7 +151,7 @@ searchForm.addEventListener("submit", async function (event) { //lyssnar när fo
 
     //hämtar receptet från API
     const data = await fetchData(searchText);
-    console.log("test2")
+    
     if (!data) { //avbryts om inget recept hittades
         return;
 
