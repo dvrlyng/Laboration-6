@@ -8,6 +8,8 @@
 const searchForm = document.querySelector("#searchform"); //formuläret
 const searchInput = document.querySelector("#search"); // sökfältet
 const errorMessage = document.querySelector("#error")
+const messageSection = document.querySelector("#message");
+const recipeSection = document.querySelector("#recipe");
 
 /*validering av formulär*/
 function validateForm(searchText) {
@@ -27,20 +29,28 @@ function validateForm(searchText) {
 async function fetchData(searchText) { //hämtar recept från API
 
     try {
-
-        const url = `https://dummyjson.com/recipes/search?q=${searchText}`; //skapa API adressen med sökfras
+        // skapa API adressen och hämta data
+        const url = `https://dummyjson.com/recipes/search?q=${searchText}`;
         const response = await fetch(url); //skickar förfrågan till API
 
-
-        if (!response.ok) { //kontrollerar om det finns fel
+        //kontrollera om API lyckades
+        if (!response.ok) {
             throw new Error("inget recept hittades, prova en ny sökfras.")
         }
+        //omvandla json till javascript
+        const data = await response.json();
+        console.log(data);
 
-        const data = await response.json(); //omvandla json till javascript
+        //kontrollerar om recept hittades
+        if (data.recipes.length === 0) {
+            messageSection.textContent = ("inga recept hittades, prova en ny sökfras."); //kontrollerar om receptet hittades
+            return;
+
+        }
 
         return data; //anropa funktionen
     } catch (error) { //hanterar fel om det uppstår vid hämtning av data
-        console.error("Kunde inte hämta recept", error);
+        console.error("tekniskt fel", error);
 
     }
 
@@ -58,6 +68,12 @@ searchForm.addEventListener("submit", async function (event) { //lyssnar när fo
     if (!validateForm(searchText)) {
         return;
     }
-    const data = await fetchData(searchText); //hämtar receptet från API
+
+    //tar bort eventuella felmeddelanden
+    messageSection.textContent = "";
+    recipeSection.innerHTML = "";
+
+    //hämtar receptet från API
+    const data = await fetchData(searchText);
     console.log("test2")
 });
