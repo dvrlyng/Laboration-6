@@ -74,6 +74,29 @@ function renderRecipe(recipe) {
 
     recipeSection.appendChild(article);
 
+    //rececpt info
+    const info = document.createElement("div");
+    info.classList.add("recipe.info");
+    article.appendChild(info);
+
+    //lägger till recept information
+    const recipeInfo = [ //skapade array med recept info
+        `Servings: ${recipe.servings}`,
+        `Prep time: ${recipe.prepTimeMinutes} minutes`,
+        `cooking time: ${recipe.cookTimeMinutes} minutes`,
+        `Difficulty: ${recipe.difficulty}`
+
+    ];
+
+    recipeInfo.forEach(function (text) { //går igenom arrayen
+        const information = document.createElement("p"); //skapar ny p element
+        information.textContent = text;
+        info.appendChild(information);
+    }
+    )
+
+    // ingredienser
+
 }
 
 /*eventlyssnare*/
