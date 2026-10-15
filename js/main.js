@@ -48,13 +48,20 @@ async function fetchData(searchText) { //hämtar recept från API
 
         }
 
+        messageSection.textContent = ""; //tar bort API meddelanden om det har lyckats
         return data; //anropa funktionen
+
     } catch (error) { //hanterar fel om det uppstår vid hämtning av data
-        console.error("tekniskt fel", error);
+
+        //vissa felmeddelanden
+        messageSection.textContent = "Försök igen senare"; //visar meddelandet på sidan
+        console.error("tekniskt fel", error);//felet skrivs i consolen
+
+        return null;
 
     }
-
 }
+
 /*visa recept på sidan*/
 function renderRecipe(recipe) {
 
@@ -151,7 +158,7 @@ searchForm.addEventListener("submit", async function (event) { //lyssnar när fo
 
     //hämtar receptet från API
     const data = await fetchData(searchText);
-    
+
     if (!data) { //avbryts om inget recept hittades
         return;
 
