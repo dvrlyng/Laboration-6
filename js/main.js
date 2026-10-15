@@ -55,7 +55,26 @@ async function fetchData(searchText) { //hämtar recept från API
     }
 
 }
+/*visa recept på sidan*/
+function renderRecipe(recipe) {
 
+    //article
+    const article = document.createElement("article"); //skapa ny element
+
+    //rubrik
+    const title = document.createElement("h3");
+    title.textContent = recipe.name;
+    article.appendChild(title);
+
+    //bild
+    const image = document.createElement("img");
+    image.src = recipe.image;
+    image.alt = recipe.name;
+    article.appendChild(image);
+
+    recipeSection.appendChild(article);
+
+}
 
 /*eventlyssnare*/
 searchForm.addEventListener("submit", async function (event) { //lyssnar när formuläret skickas
@@ -76,4 +95,12 @@ searchForm.addEventListener("submit", async function (event) { //lyssnar när fo
     //hämtar receptet från API
     const data = await fetchData(searchText);
     console.log("test2")
+    if (!data) { //avbryts om inget recept hittades
+        return;
+
+    }
+    // hämtar första receptet
+    const recipe = data.recipes[0];
+    //visar receptet på sidan
+    renderRecipe(recipe);
 });
